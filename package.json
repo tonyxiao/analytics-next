@@ -1,0 +1,16 @@
+{
+  "name": "analytics-next",
+  "version": "0.0.1",
+  "scripts": {},
+  "dependencies": {
+    "analytics-node": "^3.2.0",
+    "envvar": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/analytics-node": "^0.0.30",
+    "prettier": "^1.11.1",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.10.0",
+    "typescript": "^2.8.1"
+  }
+}
