@@ -1,7 +1,11 @@
 {
   "name": "analytics-next",
   "version": "0.0.1",
+  "license": "UNLICENSED",
+  "main": "./build",
   "scripts": {
+    "clean": "git clean -X -f  --exclude='!.envrc' --exclude='!.env'",
+    "build": "tsc",
     "test": "jest"
   },
   "dependencies": {
@@ -12,8 +16,10 @@
     "@types/analytics-node": "^0.0.30",
     "@types/jest": "^22.2.2",
     "@types/node": "^9.6.1",
+    "codecov": "^3.0.0",
     "dotenv": "^5.0.1",
     "jest": "^22.4.3",
+    "jest-junit": "^3.6.0",
     "prettier": "^1.11.1",
     "ts-jest": "^22.4.2",
     "tslint": "^5.9.1",

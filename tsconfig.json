@@ -13,6 +13,10 @@
     "pretty": true,
     "allowSyntheticDefaultImports": false,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
-  }
+    "experimentalDecorators": true,
+    "outDir": "./build",
+  },
+  "include": [
+    "./src"
+  ]
 }

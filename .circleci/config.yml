@@ -1,0 +1,46 @@
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.9
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: Install dependencies and ensure yarn.locks are up to date
+          command: yarn install && git diff --exit-code
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn build
+      
+      # run tests
+      # https://facebook.github.io/jest/docs/en/troubleshooting.html#tests-are-extremely-slow-on-docker-and-or-continuous-integration-ci-server
+      - run:
+          name: Run Tests
+          command: JEST_JUNIT_OUTPUT=./test-results/jest.xml yarn test --ci --coverage --testResultsProcessor='jest-junit' --maxWorkers=4
+      
+      - run:
+          name: Run Linter
+          command: yarn lint --format junit --out ./test-results/tslint.xml
+
+      - run: yarn codecov
+
+      - store_test_results:
+          path: ./test-results
+
+      - store_artifacts:
+          path: ./build
