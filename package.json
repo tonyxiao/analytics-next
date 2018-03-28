@@ -6,7 +6,8 @@
   "scripts": {
     "clean": "git clean -X -f  --exclude='!.envrc' --exclude='!.env'",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "lint": "tslint -p ."
   },
   "dependencies": {
     "analytics-node": "^3.2.0",
