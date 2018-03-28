@@ -1,14 +1,18 @@
 {
   "name": "analytics-next",
   "version": "0.0.1",
-  "scripts": {},
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "analytics-node": "^3.2.0",
     "envvar": "^2.0.0"
   },
   "devDependencies": {
     "@types/analytics-node": "^0.0.30",
+    "@types/jest": "^22.2.2",
     "@types/node": "^9.6.1",
+    "dotenv": "^5.0.1",
     "jest": "^22.4.3",
     "prettier": "^1.11.1",
     "ts-jest": "^22.4.2",
