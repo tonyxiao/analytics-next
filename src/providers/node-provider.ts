@@ -1,37 +1,43 @@
-import AnalyticsNode = require('analytics-node')
-import { promisify } from 'util'
+import { promisify } from 'util';
 
-import { AnalyticsProvider, Config, Properties } from '../models'
+import { AnalyticsProvider, IdentifyMessage, TrackMessage } from '../models';
+
+import AnalyticsNode = require('analytics-node')
+export interface SegmentConfig {
+  segmentWriteKey: string
+  debug?: boolean
+}
 
 export class NodeProvider implements AnalyticsProvider {
   private segment: AnalyticsNode
 
-  constructor(config: Config) {
+  constructor(config: SegmentConfig) {
     this.segment = new AnalyticsNode(config.segmentWriteKey, {
       flushAt: config.debug ? 0 : 20, // After 20 events
       flushAfter: 30, // After 30 seconds
     })
   }
 
-  public track(userId: string, event: string, properties: Properties) {
+  public onTrack(message: TrackMessage) {
     this.segment.track({
-      userId,
-      event,
-      properties,
-    })
+      userId: message.userId!,
+      anonymousId: message.anonymousId!,
+      event: message.event,
+      properties: message.properties,
+    } as any)
     return this
   }
 
-  public identify(userId: string, traits: Properties) {
+  public onIdentify(message: IdentifyMessage) {
     this.segment.identify({
-      userId,
-      traits,
+      userId: message.userId!,
+      traits: message.traits,
     })
     return this
   }
 
   // TODO: Add some tests
-  public async flush() {
+  public async onFlush() {
     return promisify(this.segment.flush)
   }
 }

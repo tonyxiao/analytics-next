@@ -1,27 +1,40 @@
-import { AnalyticsProvider, Properties } from './models';
+import {
+  AnalyticsProvider,
+  Event,
+  Events,
+  IDs,
+  Properties,
+  TrackingPlan,
+  TrackMessage,
+} from './models'
 
-export interface AllowedTraits {
-  createdAt?: Date
-  email?: string
-}
-
-export class AnalyticsUser {
-  public readonly userId: string
+export class AnalyticsUser<E extends Events, T extends Properties> {
+  public readonly ids: IDs
+  public readonly anonymousId?: string
   private analytics: AnalyticsProvider
 
-  constructor(analytics: AnalyticsProvider, userId: string) {
+  constructor(analytics: AnalyticsProvider, ids: IDs) {
     this.analytics = analytics
-    this.userId = userId
+    this.ids = ids
   }
 
-  // TODO: Consider making identify private and only calling them from tracking plan events?
-  public identify(traits: AllowedTraits) {
-    this.analytics.identify(this.userId, traits)
+  public track(event: E) {
+    const eventObject = typeof event === 'string' ? { event } : event
+    this.analytics.onTrack({
+      ...this.ids,
+      type: 'track',
+      event: (eventObject as Event<string, {}>).event,
+      properties: (eventObject as Event<string, {}>).properties || {},
+    })
     return this
   }
 
-  public track(event: string, properties: Properties) {
-    this.analytics.track(this.userId, event, properties)
+  public identify(traits: T) {
+    this.analytics.onIdentify({
+      ...this.ids,
+      traits,
+      type: 'identify',
+    })
     return this
   }
 }
