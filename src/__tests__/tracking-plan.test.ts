@@ -1,4 +1,5 @@
 import { Analytics } from '../analytics'
+import { NodeAdapter } from '../platform-adapters/node-adapter'
 import { NoProps, t, TrackingPlan } from '../tracking-plan'
 import { envvar } from '../utils'
 
@@ -17,7 +18,9 @@ const events = {
 }
 
 const analytics = new Analytics({
-  segmentWriteKey: envvar.string('SEGMENT_WRITEKEY'),
+  adapter: new NodeAdapter({
+    segmentWriteKey: envvar.string('SEGMENT_WRITEKEY'),
+  }),
   validator: new TrackingPlan({ traits, events }),
   debug: true,
 })

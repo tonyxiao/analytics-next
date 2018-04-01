@@ -1,8 +1,11 @@
 import { Analytics } from '../analytics'
+import { NodeAdapter } from '../platform-adapters/node-adapter'
 import { envvar } from '../utils'
 
 const analytics = new Analytics({
-  segmentWriteKey: envvar.string('SEGMENT_WRITEKEY'),
+  adapter: new NodeAdapter({
+    segmentWriteKey: envvar.string('SEGMENT_WRITEKEY'),
+  }),
   debug: true,
 })
 

@@ -1,6 +1,5 @@
 import { AnalyticsUser } from './analytics-user'
 import { PlatformAdatper } from './models'
-import { NodeAdapter } from './platform-adapters'
 import { TrackingPlan } from './tracking-plan'
 
 /**
@@ -9,7 +8,7 @@ import { TrackingPlan } from './tracking-plan'
  * in JavaScript so has no impact on JS code
  */
 export interface Config<T extends TrackingPlan> {
-  segmentWriteKey: string
+  adapter: PlatformAdatper
   validator?: T
   debug?: boolean
 }
@@ -20,9 +19,7 @@ export class Analytics<T extends TrackingPlan> {
 
   constructor(private config: Config<T>) {
     // TODO: Validate config here...
-    // TODO: Switch provider impl. depending on whether we are on mobile, web or server
-    // TODO: Make the interface slightly more generic and not depend on segment
-    this.adapter = new NodeAdapter(config)
+    this.adapter = config.adapter
     this.validator = config.validator
     if (config.debug && this.validator) {
       this.validator.debug = config.debug
