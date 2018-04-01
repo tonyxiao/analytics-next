@@ -1,6 +1,6 @@
 {
   "name": "analytics-next",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "UNLICENSED",
   "main": "./build",
   "scripts": {
@@ -9,6 +9,9 @@
     "test": "jest --verbose",
     "lint": "tslint -p ."
   },
+  "files": [
+    "build/"
+  ],
   "dependencies": {
     "analytics-node": "^3.3.0-beta.2",
     "es6-promisify": "^6.0.0",
@@ -31,9 +34,9 @@
     "typescript": "^2.8.1"
   },
   "optionalDependencies": {
-    "react-native": "^0.54.4",
-    "react-navigation": "^1.5.9",
     "assert": "^1.4.1",
-    "buffer": "^5.1.0"
+    "buffer": "^5.1.0",
+    "react-native": "^0.54.4",
+    "react-navigation": "^1.5.9"
   }
 }
