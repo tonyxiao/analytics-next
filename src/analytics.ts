@@ -1,7 +1,7 @@
-import { AnalyticsUser } from './analytics-user';
-import { AnalyticsProvider } from './models';
-import { NodeProvider } from './providers';
-import { TrackingPlan } from './tracking-plan';
+import { NodeAdapter } from './adapters'
+import { AnalyticsAdapter } from './analytics-adapter'
+import { AnalyticsUser } from './analytics-user'
+import { TrackingPlan } from './tracking-plan'
 
 export interface Config<T extends TrackingPlan> {
   segmentWriteKey: string
@@ -10,13 +10,13 @@ export interface Config<T extends TrackingPlan> {
 }
 
 export class Analytics<T extends TrackingPlan> {
-  private provider: AnalyticsProvider
+  private provider: AnalyticsAdapter
   private trackingPlan?: T
 
   constructor(private config: Config<T>) {
     // TODO: Validate config here...
     // TODO: Switch provider impl. depending on whether we are on mobile, web or server
-    this.provider = new NodeProvider(config)
+    this.provider = new NodeAdapter(config)
     this.trackingPlan = config.trackingPlan
     if (config.debug && this.trackingPlan) {
       this.trackingPlan.debug = config.debug
@@ -28,7 +28,7 @@ export class Analytics<T extends TrackingPlan> {
   }
 
   public anon(anonymousId: string) {
-      return new AnalyticsUser(this.provider, { anonymousId }, this.trackingPlan)
+    return new AnalyticsUser(this.provider, { anonymousId }, this.trackingPlan)
   }
 
   // TODO: Add some tests

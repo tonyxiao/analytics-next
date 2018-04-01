@@ -1,9 +1,9 @@
-import { AnalyticsProvider, IDs } from './models'
+import { AnalyticsAdapter, IDs } from './analytics-adapter'
 import { TrackingPlan, TypeOfProps } from './tracking-plan'
 
 export class AnalyticsUser<T extends TrackingPlan> {
   constructor(
-    private provider: AnalyticsProvider,
+    private provider: AnalyticsAdapter,
     public ids: IDs,
     private trackingPlan?: T,
   ) {}
