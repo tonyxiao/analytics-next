@@ -1,10 +1,10 @@
-import { AnalyticsAdapter, IDs } from './analytics-adapter'
+import { IDs, PlatformAdatper } from './platform-adapter'
 import { TrackingPlan, TypeOfProps } from './tracking-plan'
 
 export class AnalyticsUser<T extends TrackingPlan> {
   constructor(
-    private provider: AnalyticsAdapter,
     public ids: IDs,
+    private adapter: PlatformAdatper,
     private trackingPlan?: T,
   ) {}
 
@@ -15,7 +15,7 @@ export class AnalyticsUser<T extends TrackingPlan> {
         return
       }
     }
-    this.provider.onIdentify({
+    this.adapter.onIdentify({
       traits,
       ...this.ids,
       type: 'identify',
@@ -40,7 +40,7 @@ export class AnalyticsUser<T extends TrackingPlan> {
         return
       }
     }
-    this.provider.onTrack({
+    this.adapter.onTrack({
       ...message,
       ...this.ids,
       type: 'track',

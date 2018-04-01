@@ -1,3 +1,3 @@
 export * from './tracking-plan'
-export * from './analytics-adapter'
+export * from './platform-adapter'
 export * from './analytics'

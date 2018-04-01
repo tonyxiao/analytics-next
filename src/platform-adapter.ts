@@ -1,4 +1,4 @@
-export interface AnalyticsAdapter {
+export interface PlatformAdatper {
   onTrack(message: TrackMessage): void
   onIdentify(message: IdentifyMessage): void
   /** Return type not defined yet */

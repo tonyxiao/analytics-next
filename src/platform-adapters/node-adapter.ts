@@ -2,17 +2,17 @@ import AnalyticsNode = require('analytics-node')
 import { promisify } from 'util'
 
 import {
-  AnalyticsAdapter,
   IdentifyMessage,
+  PlatformAdatper,
   TrackMessage,
-} from '../analytics-adapter'
+} from '../platform-adapter'
 
 export interface SegmentConfig {
   segmentWriteKey: string
   debug?: boolean
 }
 
-export class NodeAdapter implements AnalyticsAdapter {
+export class NodeAdapter implements PlatformAdatper {
   private segment: AnalyticsNode
 
   constructor(config: SegmentConfig) {
