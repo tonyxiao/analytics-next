@@ -1,3 +1,7 @@
 {
-  "base": "../../tsconfig.json"
+  "base": "../../tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "jsx": "react-native"
+  }
 }
