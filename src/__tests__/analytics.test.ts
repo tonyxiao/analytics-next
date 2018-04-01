@@ -20,7 +20,7 @@ it('tracks event to segment', async () => {
   analytics.user(userId).track('Workspace Created', {
     workspaceId: '1234',
   })
-  analytics.anon(anonId).track('Bug Reported', {})
+  analytics.user({ anonymousId: anonId }).track('Bug Reported', {})
 
   await expect(analytics.flush()).resolves.toBeTruthy()
 })

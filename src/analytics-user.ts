@@ -6,7 +6,7 @@ import {
   PlatformAdatper,
   TrackMessage,
 } from './models'
-import { TrackingPlan, TypeOfProps } from './tracking-plan'
+import { NeverProps, TrackingPlan, TypeOfProps } from './tracking-plan'
 
 export class AnalyticsUser<T extends TrackingPlan> {
   constructor(

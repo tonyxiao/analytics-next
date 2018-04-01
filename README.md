@@ -7,6 +7,7 @@ Next gen. universal Segment.io client powered by TypeScript - compile time track
 * [ ] Auto-application lifecycle methods
 * [ ] Auto screen tracking for react-navigation
 * [ ] Auto-collect context information
+* [ ] Persist offline events
 * [ ] Better dependency management around platforms
 
 # Dev Todo:
