@@ -1,4 +1,7 @@
 import * as t from 'io-ts'
+// tslint:disable-next-line no-submodule-imports
+import { PathReporter } from 'io-ts/lib/PathReporter'
+import { inspect } from 'util'
 
 import {
   Context,
@@ -44,11 +47,18 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
   }
 
   public validateIdentify(message: IdentifyMessage) {
+    // TODO: Figure out how to handle this directly in io-ts
+    // via properly understanding strict type
+    for (const name of Object.keys(message.traits)) {
+      if (name in this.traits === false) {
+        return this.error(`Trait not allowed: '${name}'`)
+      }
+    }
     // TODO: Pre-compile validators once so we dont' need to re-run every time
-    const res = t.type(this.traits as any).decode(message.traits)
+    const res = t.partial(this.traits as any).decode(message.traits)
     if (res.isLeft()) {
       // TODO: Add io-ts reporters to say exactly what's not valid
-      return this.error(`Traits are not valid`)
+      return this.error(`Traits are not valid ${inspect(message.traits)}`, res)
     }
     return {
       ...message,
@@ -61,11 +71,19 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
     if (event in this.events === false) {
       return this.error(`'${event}' not found in tracking plan`)
     }
+    for (const name of Object.keys(message.properties)) {
+      if (name in this.events[event] === false) {
+        return this.error(`Event '${event}' property not allowed: '${name}'`)
+      }
+    }
     // TODO: Make sure to handle NoProps case
     const res = t.type(this.events[event] as any).decode(properties)
     if (res.isLeft()) {
       // TODO: Add io-ts reporters to say exactly what's not valid
-      return this.error(`${event} properties are not valid`)
+      return this.error(
+        `'${event}' properties are not valid ${inspect(message.properties)}`,
+        res,
+      )
     }
     return {
       ...message,
@@ -73,13 +91,22 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
     }
   }
 
-  private error(msg: string) {
+  private error(msg: string, validation?: t.Validation<any>) {
     if (this.debug) {
-      throw new TrackingPlanError(msg)
+      throw new TrackingPlanError(msg, validation)
     }
     return null
   }
 }
 
 // tslint:disable-next-line max-classes-per-file
-export class TrackingPlanError extends Error {}
+export class TrackingPlanError extends Error {
+  constructor(message: string, validation?: t.Validation<any>) {
+    if (!validation) {
+      super(message)
+      return
+    }
+    const errorMsg = PathReporter.report(validation).join('\n')
+    super(`${message}:\n\t${errorMsg}`)
+  }
+}

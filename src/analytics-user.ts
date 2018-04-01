@@ -16,7 +16,10 @@ export class AnalyticsUser<T extends TrackingPlan> {
     private context: Context = {},
   ) {}
 
-  public identify(traits: TypeOfProps<T['traits']>, opts: OptionalFields = {}) {
+  public identify(
+    traits: Partial<TypeOfProps<T['traits']>>,
+    opts: OptionalFields = {},
+  ) {
     let message: IdentifyMessage | null = {
       ...opts,
       ...this.ids,

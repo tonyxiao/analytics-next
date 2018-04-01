@@ -5,6 +5,7 @@ import { envvar } from '../utils'
 
 const traits = {
   email: t.string,
+  cohort: t.string,
 }
 const events = {
   'User Signed Up': {
@@ -17,11 +18,13 @@ const events = {
   'Song Started': NoProps,
 }
 
+const plan = new TrackingPlan({ traits, events })
+
 const analytics = new Analytics({
   adapter: new NodeAdapter({
     segmentWriteKey: envvar.string('SEGMENT_WRITEKEY'),
   }),
-  validator: new TrackingPlan({ traits, events }),
+  validator: plan,
   debug: true,
 })
 
@@ -50,6 +53,9 @@ it('identifies event to segment', async () => {
   analytics.user(userId).identify({
     email: 'test@test.com',
   })
+  analytics.user(userId).identify({
+    cohort: 'april-2017',
+  })
   await expect(analytics.flush()).resolves.toBeTruthy()
 })
 
@@ -60,9 +66,24 @@ describe('while debugging', () => {
     )
   })
 
+  it('throws for not allowed prop on event', () => {
+    expect(() =>
+      analytics.user(userId).track('Account Created', {
+        id: 'aid-123',
+        banana: 'money',
+      } as any),
+    ).toThrow("property not allowed: 'banana'")
+  })
+
+  it('throws for missing props on event', () => {
+    expect(() =>
+      analytics.user(userId).track('Account Created', {} as any),
+    ).toThrow('properties are not valid')
+  })
+
   it('throws for bad traits', () => {
     expect(() => analytics.user(userId).identify({ ssn: '1' } as any)).toThrow(
-      'Traits are not valid',
+      "Trait not allowed: 'ssn'",
     )
   })
 })
