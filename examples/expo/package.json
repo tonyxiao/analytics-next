@@ -10,8 +10,8 @@
     "buffer": "^5.1.0",
     "expo": "^26.0.0",
     "react": "16.3.0-alpha.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
-    "util": "^0.10.3"
+    "react-native":
+      "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz"
   },
   "devDependencies": {
     "@types/react-native": "^0.52.22",

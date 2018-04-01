@@ -12,10 +12,12 @@
   "dependencies": {
     "analytics-node": "^3.3.0-beta.2",
     "envvar": "^2.0.0",
+    "es6-promisify": "^6.0.0",
     "io-ts": "^1.0.5"
   },
   "devDependencies": {
     "@types/analytics-node": "^0.0.30",
+    "@types/es6-promisify": "^6.0.0",
     "@types/jest": "^22.2.2",
     "@types/node": "^9.6.1",
     "codecov": "^3.0.0",

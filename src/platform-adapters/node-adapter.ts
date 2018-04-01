@@ -1,5 +1,5 @@
 import AnalyticsNode = require('analytics-node')
-import { promisify } from 'util'
+import { promisify } from 'es6-promisify'
 
 import { IdentifyMessage, PlatformAdatper, TrackMessage } from '../models'
 
