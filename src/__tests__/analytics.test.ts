@@ -32,3 +32,30 @@ it('identifies event to segment', async () => {
   })
   await expect(analytics.flush()).resolves.toBeTruthy()
 })
+
+it('passes context', async () => {
+  analytics
+    .user(userId, {
+      uniqueSession: 'session-unique-123',
+    })
+    .track('Event w/ Context', {})
+  await expect(analytics.flush()).resolves.toBeTruthy()
+})
+
+it('passes context and integrations per call', async () => {
+  analytics.user(userId).track(
+    'Event w/ Context In Call',
+    {
+      tranId: 'tran-1234',
+    },
+    {
+      context: {
+        callContext: 'call-context-333',
+      },
+      integrations: {
+        mixpanel: false,
+      },
+    },
+  )
+  await expect(analytics.flush()).resolves.toBeTruthy()
+})
