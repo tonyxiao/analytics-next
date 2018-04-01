@@ -1,5 +1,5 @@
 import { AnalyticsUser } from './analytics-user'
-import { PlatformAdatper } from './platform-adapter'
+import { PlatformAdatper } from './models'
 import { NodeAdapter } from './platform-adapters'
 import { TrackingPlan } from './tracking-plan'
 

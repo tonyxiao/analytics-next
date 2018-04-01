@@ -1,5 +1,4 @@
-import { IdentifyMessage, IDs, TrackMessage } from './models'
-import { PlatformAdatper } from './platform-adapter'
+import { IdentifyMessage, IDs, PlatformAdatper, TrackMessage } from './models'
 import { TrackingPlan, TypeOfProps } from './tracking-plan'
 
 export class AnalyticsUser<T extends TrackingPlan> {

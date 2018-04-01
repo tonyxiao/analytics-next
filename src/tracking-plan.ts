@@ -1,28 +1,8 @@
 import * as t from 'io-ts'
 
-import { IdentifyMessage, TrackMessage } from './models'
+import { IdentifyMessage, TrackMessage, UntypedTrackingPlan } from './models'
 
 export { t }
-
-/**
- * If you were to use JavaScript rather than TypeScript, or otherwise don't
- * care about compile-time type safety, this is the only interface you will need to
- * implement - and the only one that `Analytics` class at runtime actually cares about
- */
-export interface UntypedTrackingPlan {
-  /**
-   * Validates and cleans a set of traits
-   */
-  validateIdentify(message: IdentifyMessage): IdentifyMessage | null
-  /**
-   * Validate and cleans the event
-   * @returns
-   *  - `null` to swallow the event and prevent it from sending
-   *  - `EventValue` with a a possibly modified version of the event to allow it to send
-   */
-  validateTrack(message: TrackMessage): TrackMessage | null
-}
-
 interface NeverProps {
   [key: string]: t.Type<never>
 }
