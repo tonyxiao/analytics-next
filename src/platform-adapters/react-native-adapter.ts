@@ -4,6 +4,7 @@ import 'assert'
 
 import { Buffer } from 'buffer'
 
+import { SegmentConfig } from '.'
 import { PlatformAdatper } from '../models'
 
 global.Buffer = Buffer
@@ -13,11 +14,6 @@ global.process = {
   },
   env: {},
 } as any
-
-export interface SegmentConfig {
-  segmentWriteKey: string
-  debug?: boolean
-}
 
 export interface ReactNativeAdapter extends PlatformAdatper {
   new (config: SegmentConfig): this

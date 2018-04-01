@@ -1,21 +1,21 @@
 import AnalyticsNode = require('analytics-node')
 import { promisify } from 'es6-promisify'
 
+import { SegmentConfig } from '.'
 import { IdentifyMessage, PlatformAdatper, TrackMessage } from '../models'
-
-export interface SegmentConfig {
-  segmentWriteKey: string
-  debug?: boolean
-}
 
 export class NodeAdapter implements PlatformAdatper {
   private segment: AnalyticsNode
+  private context = {
+    library: {
+      name: 'analytics-next',
+      version: require('../../package.json').version,
+    },
+  }
 
   constructor(config: SegmentConfig) {
-    this.segment = new AnalyticsNode(config.segmentWriteKey, {
-      flushAt: config.debug ? 0 : 20, // After 20 events
-      flushAfter: 30, // After 30 seconds
-    })
+    const { segmentWriteKey, ...options } = config
+    this.segment = new AnalyticsNode(segmentWriteKey, options)
   }
 
   public onTrack(message: TrackMessage) {
@@ -24,6 +24,11 @@ export class NodeAdapter implements PlatformAdatper {
       anonymousId: message.anonymousId!,
       event: message.event,
       properties: message.properties,
+      context: {
+        ...this.context,
+        ...message.context,
+      },
+      integrations: message.integrations,
     } as any)
     return this
   }
@@ -32,6 +37,11 @@ export class NodeAdapter implements PlatformAdatper {
     this.segment.identify({
       userId: message.userId!,
       traits: message.traits,
+      context: {
+        ...this.context,
+        ...message.context,
+      },
+      integrations: message.integrations,
     })
     return this
   }

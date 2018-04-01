@@ -1,5 +1,5 @@
 import { AnalyticsUser } from './analytics-user'
-import { PlatformAdatper } from './models'
+import { Context, PlatformAdatper } from './models'
 import { TrackingPlan } from './tracking-plan'
 
 /**
@@ -26,12 +26,17 @@ export class Analytics<T extends TrackingPlan> {
     }
   }
 
-  public user(userId: string) {
-    return new AnalyticsUser({ userId }, this.adapter, this.validator)
+  public user(userId: string, context?: Context) {
+    return new AnalyticsUser({ userId }, this.adapter, this.validator, context)
   }
 
-  public anon(anonymousId: string) {
-    return new AnalyticsUser({ anonymousId }, this.adapter, this.validator)
+  public anon(anonymousId: string, context?: Context) {
+    return new AnalyticsUser(
+      { anonymousId },
+      this.adapter,
+      this.validator,
+      context,
+    )
   }
 
   // TODO: Add some tests

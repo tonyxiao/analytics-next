@@ -3,7 +3,26 @@ export interface IDs {
   anonymousId?: string
 }
 
-export interface BaseMessage extends IDs {
+/** Mainly used in client side to collect additional info about user */
+export interface Context {
+  [k: string]: any
+}
+
+/** Enable / disable specifci segment integrations */
+export interface Integrations {
+  [name: string]: any
+}
+
+export interface OptionalFields {
+  // Following fields would be auto-populated by analytics-node
+  // if they don't exist
+  context?: Context
+  timestamp?: Date
+  messageId?: string
+  integrations?: Integrations
+}
+
+export interface BaseMessage extends IDs, OptionalFields {
   type: 'track' | 'identify'
 }
 

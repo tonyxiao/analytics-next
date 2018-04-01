@@ -31,6 +31,8 @@
     "typescript": "^2.8.1"
   },
   "optionalDependencies": {
+    "react-native": "^0.54.4",
+    "react-navigation": "^1.5.9",
     "assert": "^1.4.1",
     "buffer": "^5.1.0"
   }

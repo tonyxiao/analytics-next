@@ -1,4 +1,11 @@
-import { IdentifyMessage, IDs, PlatformAdatper, TrackMessage } from './models'
+import {
+  Context,
+  IdentifyMessage,
+  IDs,
+  OptionalFields,
+  PlatformAdatper,
+  TrackMessage,
+} from './models'
 import { TrackingPlan, TypeOfProps } from './tracking-plan'
 
 export class AnalyticsUser<T extends TrackingPlan> {
@@ -6,12 +13,18 @@ export class AnalyticsUser<T extends TrackingPlan> {
     public ids: IDs,
     private adapter: PlatformAdatper,
     private validator?: T,
+    private context: Context = {},
   ) {}
 
-  public identify(traits: TypeOfProps<T['traits']>) {
+  public identify(traits: TypeOfProps<T['traits']>, opts: OptionalFields = {}) {
     let message: IdentifyMessage | null = {
-      traits,
+      ...opts,
       ...this.ids,
+      context: {
+        ...this.context,
+        ...opts.context,
+      },
+      traits,
       type: 'identify',
     }
     if (this.validator) {
@@ -33,9 +46,15 @@ export class AnalyticsUser<T extends TrackingPlan> {
   public track<E extends keyof T['events']>(
     event: E,
     properties: TypeOfProps<T['events'][E]>,
+    opts: OptionalFields = {},
   ) {
     let message: TrackMessage | null = {
+      ...opts,
       ...this.ids,
+      context: {
+        ...this.context,
+        ...opts.context,
+      },
       event,
       properties,
       type: 'track',

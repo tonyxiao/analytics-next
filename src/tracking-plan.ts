@@ -1,6 +1,12 @@
 import * as t from 'io-ts'
 
-import { IdentifyMessage, SchemaValidator, TrackMessage } from './models'
+import {
+  Context,
+  IdentifyMessage,
+  Integrations,
+  SchemaValidator,
+  TrackMessage,
+} from './models'
 
 export { t }
 export interface NeverProps {
