@@ -5,7 +5,10 @@ Next gen. universal Segment.io client powered by TypeScript - compile time track
 # TODO:
 
 * [ ] Auto-application lifecycle methods
-* [ ] Hook for react-navigation
-* [ ] Collect context information
-* [ ] Setup lerna mono-repo and split providers into platforms
+* [ ] Auto screen tracking for react-navigation
+* [ ] Auto-collect context information
+* [ ] Better dependency management around platforms
+
+# Dev Todo:
+
 * [ ] Setup wallaby.js
