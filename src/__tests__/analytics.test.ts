@@ -1,11 +1,9 @@
-import { Analytics } from '../analytics';
-import { envvar } from '../utils';
-import { trackingPlan } from './test-tracking-plan';
+import { Analytics } from '../analytics'
+import { envvar } from '../utils'
 
 const analytics = new Analytics({
   segmentWriteKey: envvar.string('SEGMENT_WRITEKEY'),
   debug: true,
-  trackingPlan,
 })
 
 afterEach(async () => {
@@ -16,11 +14,10 @@ const userId = 'analytics-test-user-id'
 const anonId = 'analytics-test-anon-id'
 
 it('tracks event to segment', async () => {
-  analytics.user(userId).track({
-    event: 'Workspace Created',
-    properties: { workspaceId: '1234' },
+  analytics.user(userId).track('Workspace Created', {
+    workspaceId: '1234',
   })
-  analytics.anon(anonId).track('Bug Reported')
+  analytics.anon(anonId).track('Bug Reported', {})
 
   await expect(analytics.flush()).resolves.toBeTruthy()
 })

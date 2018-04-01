@@ -1,39 +1,49 @@
-import {
-  AnalyticsProvider,
-  Event,
-  Events,
-  IDs,
-  Properties,
-  TrackingPlan,
-  TrackMessage,
-} from './models'
+import { AnalyticsProvider, IDs } from './models'
+import { TrackingPlan, TypeOfProps } from './tracking-plan'
 
-export class AnalyticsUser<E extends Events, T extends Properties> {
-  public readonly ids: IDs
-  public readonly anonymousId?: string
-  private analytics: AnalyticsProvider
+export class AnalyticsUser<T extends TrackingPlan> {
+  constructor(
+    private provider: AnalyticsProvider,
+    public ids: IDs,
+    private trackingPlan?: T,
+  ) {}
 
-  constructor(analytics: AnalyticsProvider, ids: IDs) {
-    this.analytics = analytics
-    this.ids = ids
-  }
-
-  public track(event: E) {
-    const eventObject = typeof event === 'string' ? { event } : event
-    this.analytics.onTrack({
+  public identify(traits: TypeOfProps<T['traits']>) {
+    if (this.trackingPlan) {
+      traits = this.trackingPlan.validateTraits(traits) as any
+      if (!traits) {
+        return
+      }
+    }
+    this.provider.onIdentify({
+      traits,
       ...this.ids,
-      type: 'track',
-      event: (eventObject as Event<string, {}>).event,
-      properties: (eventObject as Event<string, {}>).properties || {},
+      type: 'identify',
     })
     return this
   }
 
-  public identify(traits: T) {
-    this.analytics.onIdentify({
+  /**
+   * Tracks event on the currently identified user
+   * The second argument is optional, however we are not able to add `?` to it
+   * due to type-safety and language constraints - optional 2nd argument opens up the backdoor
+   * that one could miss passing props to events which actually require props
+   */
+  public track<E extends keyof T['events']>(
+    event: E,
+    properties: TypeOfProps<T['events'][E]>,
+  ) {
+    let message = { event, properties }
+    if (this.trackingPlan) {
+      message = this.trackingPlan.validateEvent(message) as any
+      if (!message) {
+        return
+      }
+    }
+    this.provider.onTrack({
+      ...message,
       ...this.ids,
-      traits,
-      type: 'identify',
+      type: 'track',
     })
     return this
   }

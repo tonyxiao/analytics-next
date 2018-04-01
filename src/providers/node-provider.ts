@@ -1,6 +1,6 @@
-import { promisify } from 'util';
+import { promisify } from 'util'
 
-import { AnalyticsProvider, IdentifyMessage, TrackMessage } from '../models';
+import { AnalyticsProvider, IdentifyMessage, TrackMessage } from '../models'
 
 import AnalyticsNode = require('analytics-node')
 export interface SegmentConfig {
