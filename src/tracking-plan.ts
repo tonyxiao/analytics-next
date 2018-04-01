@@ -29,8 +29,13 @@ export const NoProps: NeverProps = {}
 export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
   implements SchemaValidator {
   public debug = false
+  public traits: T
+  public events: E
 
-  constructor(public traits: T, public events: E) {}
+  constructor(options: { traits: T; events: E }) {
+    this.traits = options.traits
+    this.events = options.events
+  }
 
   public validateIdentify(message: IdentifyMessage) {
     // TODO: Pre-compile validators once so we dont' need to re-run every time
