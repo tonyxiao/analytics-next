@@ -1,6 +1,6 @@
 {
   "name": "analytics-next",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "author": {
     "name": "Tony Xiao",
@@ -14,7 +14,10 @@
     "test": "jest --verbose",
     "lint": "tslint -p ."
   },
-  "files": ["build/", "src/"],
+  "files": [
+    "build/",
+    "src/"
+  ],
   "dependencies": {
     "analytics-node": "^3.3.0-beta.2",
     "es6-promisify": "^6.0.0",
@@ -25,6 +28,8 @@
     "@types/es6-promisify": "^6.0.0",
     "@types/jest": "^22.2.2",
     "@types/node": "^9.6.1",
+    "assert": "^1.4.1",
+    "buffer": "^5.1.0",
     "codecov": "^3.0.0",
     "dotenv": "^5.0.1",
     "envvar": "^2.0.0",
@@ -34,8 +39,6 @@
     "ts-jest": "^22.4.2",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.10.0",
-    "typescript": "^2.8.1",
-    "assert": "^1.4.1",
-    "buffer": "^5.1.0"
+    "typescript": "^2.8.1"
   }
 }
