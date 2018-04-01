@@ -16,6 +16,7 @@ export class Analytics<T extends TrackingPlan> {
   constructor(private config: Config<T>) {
     // TODO: Validate config here...
     // TODO: Switch provider impl. depending on whether we are on mobile, web or server
+    // TODO: Make the interface slightly more generic and not depend on segment
     this.adapter = new NodeAdapter(config)
     this.trackingPlan = config.trackingPlan
     if (config.debug && this.trackingPlan) {

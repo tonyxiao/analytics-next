@@ -28,6 +28,12 @@ afterEach(async () => {
 
 const userId = 'analytics-test-user-id'
 
+it('tracks event with no props', async () => {
+  analytics.user(userId).track('Song Started', {})
+
+  await expect(analytics.flush()).resolves.toBeTruthy()
+})
+
 it('tracks event to segment', async () => {
   analytics.user(userId).track('User Signed Up', {
     name: 'Tony',

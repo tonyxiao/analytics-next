@@ -1,4 +1,5 @@
-import { IDs, PlatformAdatper } from './platform-adapter'
+import { IdentifyMessage, IDs, TrackMessage } from './models'
+import { PlatformAdatper } from './platform-adapter'
 import { TrackingPlan, TypeOfProps } from './tracking-plan'
 
 export class AnalyticsUser<T extends TrackingPlan> {
@@ -9,17 +10,18 @@ export class AnalyticsUser<T extends TrackingPlan> {
   ) {}
 
   public identify(traits: TypeOfProps<T['traits']>) {
-    if (this.trackingPlan) {
-      traits = this.trackingPlan.validateTraits(traits) as any
-      if (!traits) {
-        return
-      }
-    }
-    this.adapter.onIdentify({
+    let message: IdentifyMessage | null = {
       traits,
       ...this.ids,
       type: 'identify',
-    })
+    }
+    if (this.trackingPlan) {
+      message = this.trackingPlan.validateIdentify(message)
+      if (!message) {
+        return
+      }
+    }
+    this.adapter.onIdentify(message)
     return this
   }
 
@@ -33,18 +35,19 @@ export class AnalyticsUser<T extends TrackingPlan> {
     event: E,
     properties: TypeOfProps<T['events'][E]>,
   ) {
-    let message = { event, properties }
+    let message: TrackMessage | null = {
+      ...this.ids,
+      event,
+      properties,
+      type: 'track',
+    }
     if (this.trackingPlan) {
-      message = this.trackingPlan.validateEvent(message) as any
+      message = this.trackingPlan.validateTrack(message)
       if (!message) {
         return
       }
     }
-    this.adapter.onTrack({
-      ...message,
-      ...this.ids,
-      type: 'track',
-    })
+    this.adapter.onTrack(message)
     return this
   }
 }

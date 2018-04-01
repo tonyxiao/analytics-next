@@ -1,70 +1,72 @@
-import * as t from 'io-ts';
+import * as t from 'io-ts'
+
+import { IdentifyMessage, TrackMessage } from './models'
 
 export { t }
-
-interface NoPropsType {
-  [key: string]: t.Type<never>
-}
-
-type AnyOrNoProps = NoPropsType | t.AnyProps
-export type TypeOfProps<P extends AnyOrNoProps> = { [K in keyof P]: P[K]['_A'] }
-
-interface PropertiesValue {
-  [k: string]: any
-}
-interface EventValue {
-  event: string
-  properties: PropertiesValue
-}
-
-/** Runtype type for  */
-export type Traits = AnyOrNoProps
-export interface Events {
-  [eventName: string]: AnyOrNoProps
-}
 
 /**
  * If you were to use JavaScript rather than TypeScript, or otherwise don't
  * care about compile-time type safety, this is the only interface you will need to
- * impelement
+ * implement - and the only one that `Analytics` class at runtime actually cares about
  */
-interface SchemaValidator {
+export interface UntypedTrackingPlan {
   /**
    * Validates and cleans a set of traits
    */
-  validateTraits(traits: PropertiesValue): PropertiesValue | null
+  validateIdentify(message: IdentifyMessage): IdentifyMessage | null
   /**
    * Validate and cleans the event
    * @returns
    *  - `null` to swallow the event and prevent it from sending
    *  - `EventValue` with a a possibly modified version of the event to allow it to send
    */
-  validateEvent(event: EventValue): EventValue | null
+  validateTrack(message: TrackMessage): TrackMessage | null
 }
 
-export const NoProps: NoPropsType = {}
+interface NeverProps {
+  [key: string]: t.Type<never>
+}
+/** We need this to as a workaround to accomodate `NeverProps` type */
+type AnyOrNeverProps = NeverProps | t.AnyProps
+export type TypeOfProps<P extends AnyOrNeverProps> = {
+  [K in keyof P]: P[K]['_A']
+}
+
+/** Runtype type for traits */
+export type Traits = AnyOrNeverProps
+
+/** Runtime type for events */
+export interface Events {
+  [eventName: string]: AnyOrNeverProps
+}
+
+export const NoProps: NeverProps = {}
 
 /**
  * This is a TypeScript implementation of `SchemaValidator` which allows for both
  * compile time and runtime type validation
  */
 export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
-  implements SchemaValidator {
+  implements UntypedTrackingPlan {
   public debug = false
 
   constructor(public traits: T, public events: E) {}
 
-  public validateTraits(traits: PropertiesValue) {
+  public validateIdentify(message: IdentifyMessage) {
     // TODO: Pre-compile validators once so we dont' need to re-run every time
-    const res = t.type(this.traits as any).decode(traits)
+    const res = t.type(this.traits as any).decode(message.traits)
     if (res.isLeft()) {
       // TODO: Add io-ts reporters to say exactly what's not valid
       return this.error(`Traits are not valid`)
     }
-    return res.value
+    return {
+      ...message,
+      traits: res.value,
+    }
   }
 
-  public validateEvent({ event, properties }: EventValue) {
+  public validateTrack(message: TrackMessage) {
+    const { event, properties } = message
     if (event in this.events === false) {
       return this.error(`'${event}' not found in tracking plan`)
     }
@@ -74,7 +76,10 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
       // TODO: Add io-ts reporters to say exactly what's not valid
       return this.error(`${event} properties are not valid`)
     }
-    return { event, properties: res.value }
+    return {
+      ...message,
+      properties: res.value,
+    }
   }
 
   private error(msg: string) {
@@ -85,5 +90,5 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
   }
 }
 
-// tslint:disable-next-line
-class TrackingPlanError extends Error {}
+// tslint:disable-next-line max-classes-per-file
+export class TrackingPlanError extends Error {}

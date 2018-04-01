@@ -1,11 +1,8 @@
 import AnalyticsNode = require('analytics-node')
 import { promisify } from 'util'
 
-import {
-  IdentifyMessage,
-  PlatformAdatper,
-  TrackMessage,
-} from '../platform-adapter'
+import { IdentifyMessage, TrackMessage } from '../models'
+import { PlatformAdatper } from '../platform-adapter'
 
 export interface SegmentConfig {
   segmentWriteKey: string
