@@ -3,6 +3,11 @@ import { PlatformAdatper } from './models'
 import { NodeAdapter } from './platform-adapters'
 import { TrackingPlan } from './tracking-plan'
 
+/**
+ * We use `TrackingPlan` instead of Validator here for best compile
+ * time error checking in TypeScript. All the type information goes away
+ * in JavaScript so has no impact on JS code
+ */
 export interface Config<T extends TrackingPlan> {
   segmentWriteKey: string
   validator?: T
