@@ -1,9 +1,18 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
+    "analytics-next": "file:../../",
     "expo": "^26.0.0",
     "react": "16.3.0-alpha.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz"
+    "react-native":
+      "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz"
+  },
+  "devDependencies": {
+    "@types/react-native": "^0.52.22",
+    "typescript": "^2.8.1"
   }
 }
