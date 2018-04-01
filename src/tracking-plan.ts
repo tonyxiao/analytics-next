@@ -1,6 +1,6 @@
 import * as t from 'io-ts'
 
-import { IdentifyMessage, TrackMessage, UntypedTrackingPlan } from './models'
+import { IdentifyMessage, SchemaValidator, TrackMessage } from './models'
 
 export { t }
 interface NeverProps {
@@ -27,7 +27,7 @@ export const NoProps: NeverProps = {}
  * compile time and runtime type validation
  */
 export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
-  implements UntypedTrackingPlan {
+  implements SchemaValidator {
   public debug = false
 
   constructor(public traits: T, public events: E) {}

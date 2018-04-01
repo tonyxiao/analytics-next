@@ -32,9 +32,10 @@ export interface PlatformAdatper {
 /**
  * If you were to use JavaScript rather than TypeScript, or otherwise don't
  * care about compile-time type safety, this is the only interface you will need to
- * implement - and the only one that `Analytics` class at runtime actually cares about
+ * implement - and the only one that `Analytics` class at runtime actually cares about.
+ * IF you are using TypeScript though, check out TrackingPlan
  */
-export interface UntypedTrackingPlan {
+export interface SchemaValidator {
   /**
    * Validates and cleans a set of traits
    */

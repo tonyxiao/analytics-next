@@ -18,7 +18,7 @@ const events = {
 
 const analytics = new Analytics({
   segmentWriteKey: envvar.string('SEGMENT_WRITEKEY'),
-  trackingPlan: new TrackingPlan(traits, events),
+  validator: new TrackingPlan(traits, events),
   debug: true,
 })
 

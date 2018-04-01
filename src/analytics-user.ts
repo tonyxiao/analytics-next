@@ -5,7 +5,7 @@ export class AnalyticsUser<T extends TrackingPlan> {
   constructor(
     public ids: IDs,
     private adapter: PlatformAdatper,
-    private trackingPlan?: T,
+    private validator?: T,
   ) {}
 
   public identify(traits: TypeOfProps<T['traits']>) {
@@ -14,8 +14,8 @@ export class AnalyticsUser<T extends TrackingPlan> {
       ...this.ids,
       type: 'identify',
     }
-    if (this.trackingPlan) {
-      message = this.trackingPlan.validateIdentify(message)
+    if (this.validator) {
+      message = this.validator.validateIdentify(message)
       if (!message) {
         return
       }
@@ -40,8 +40,8 @@ export class AnalyticsUser<T extends TrackingPlan> {
       properties,
       type: 'track',
     }
-    if (this.trackingPlan) {
-      message = this.trackingPlan.validateTrack(message)
+    if (this.validator) {
+      message = this.validator.validateTrack(message)
       if (!message) {
         return
       }
