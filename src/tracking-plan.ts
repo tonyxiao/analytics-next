@@ -3,11 +3,11 @@ import * as t from 'io-ts'
 import { IdentifyMessage, SchemaValidator, TrackMessage } from './models'
 
 export { t }
-interface NeverProps {
+export interface NeverProps {
   [key: string]: t.Type<never>
 }
 /** We need this to as a workaround to accomodate `NeverProps` type */
-type AnyOrNeverProps = NeverProps | t.AnyProps
+export type AnyOrNeverProps = NeverProps | t.AnyProps
 export type TypeOfProps<P extends AnyOrNeverProps> = {
   [K in keyof P]: P[K]['_A']
 }
