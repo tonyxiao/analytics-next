@@ -1,34 +1,44 @@
-// tslint:disable no-submodule-imports
-import { Analytics } from 'analytics-next/build'
 import * as React from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 
-const analytics = new Analytics({
-  segmentWriteKey: 'gvGMrg2HyyKPqOL0i6CLAH8tdnfb52uC',
-})
+import { analytics } from './analytics'
+import { StackNav } from './navigation'
 
 export class App extends React.Component {
+  public componentDidMount() {
+    analytics.user('expo').track('App Launched', {
+      sessionId: '1234567',
+    })
+  }
   public render() {
     return (
-      <View style={styles.container}>
-        <Text>TypeScript App Actually working</Text>
+      <StackNav
+        onNavigationStateChange={(prevState, currentState) => {
+          const currentScreen = getCurrentRouteName(currentState)
+          const prevScreen = getCurrentRouteName(prevState)
 
-        <Button
-          title="track"
-          onPress={() => {
-            analytics.user('expo').track('my event', {})
-          }}
-        />
-      </View>
+          if (prevScreen !== currentScreen) {
+            // the line below uses the Google Analytics tracker
+            // change the tracker here to use other Mobile analytics SDK.
+            analytics.user('expo').track('Screen Viewed', {
+              name: currentScreen,
+            })
+          }
+        }}
+      />
     )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
+// gets the current screen from navigation state
+function getCurrentRouteName(navigationState) {
+  if (!navigationState) {
+    return null
+  }
+  const route = navigationState.routes[navigationState.index]
+  // dive into nested navigators
+  if (route.routes) {
+    return getCurrentRouteName(route)
+  }
+  return route.routeName
+}

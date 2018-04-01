@@ -29,5 +29,9 @@
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.10.0",
     "typescript": "^2.8.1"
+  },
+  "optionalDependencies": {
+    "assert": "^1.4.1",
+    "buffer": "^5.1.0"
   }
 }

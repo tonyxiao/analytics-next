@@ -5,13 +5,13 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@types/react-navigation": "^1.5.2",
     "analytics-next": "file:../../",
-    "assert": "^1.4.1",
-    "buffer": "^5.1.0",
     "expo": "^26.0.0",
     "react": "16.3.0-alpha.1",
     "react-native":
-      "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz"
+      "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
+    "react-navigation": "^1.5.9"
   },
   "devDependencies": {
     "@types/react-native": "^0.52.22",

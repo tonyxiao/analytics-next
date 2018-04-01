@@ -6,7 +6,6 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     // Thank you! https://github.com/Microsoft/vscode/issues/869#issuecomment-256918658
-    "**/*.js": { "when": "$(basename).ts" },
     "**/*.js": { "when": "$(basename).tsx" }
   },
   "editor.formatOnSave": true
