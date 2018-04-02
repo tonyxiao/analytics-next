@@ -37,6 +37,8 @@ export interface IdentifyMessage extends BaseMessage {
   traits: Properties
 }
 
+export type Message = TrackMessage | IdentifyMessage
+
 export interface Properties {
   [k: string]: any
 }

@@ -2,16 +2,16 @@ import {
   Context,
   IdentifyMessage,
   IDs,
+  Message,
   OptionalFields,
-  PlatformAdatper,
   TrackMessage,
 } from './models'
-import { NeverProps, TrackingPlan, TypeOfProps } from './tracking-plan'
+import { TrackingPlan, TypeOfProps } from './tracking-plan'
 
 export class AnalyticsUser<T extends TrackingPlan> {
   constructor(
     public ids: IDs,
-    private adapter: PlatformAdatper,
+    private enqueueMessage: (message: Message) => void,
     private validator?: T,
     private context: Context = {},
   ) {
@@ -38,7 +38,7 @@ export class AnalyticsUser<T extends TrackingPlan> {
         return this
       }
     }
-    this.adapter.onIdentify(message)
+    this.enqueueMessage(message)
     return this
   }
 
@@ -70,7 +70,7 @@ export class AnalyticsUser<T extends TrackingPlan> {
         return this
       }
     }
-    this.adapter.onTrack(message)
+    this.enqueueMessage(message)
     return this
   }
 }

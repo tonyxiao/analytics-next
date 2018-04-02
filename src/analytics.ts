@@ -1,5 +1,5 @@
 import { AnalyticsUser } from './analytics-user'
-import { Context, PlatformAdatper, IDs } from './models'
+import { Context, IDs, Message, PlatformAdatper } from './models'
 import { TrackingPlan } from './tracking-plan'
 
 /**
@@ -12,6 +12,7 @@ export interface Config<T extends TrackingPlan> {
   validator?: T
   debug?: boolean
   context?: Context
+  onMessage?: (message: Message) => void
 }
 
 export class Analytics<T extends TrackingPlan> {
@@ -32,11 +33,47 @@ export class Analytics<T extends TrackingPlan> {
     const ctx = this.config.context
       ? { ...this.config.context, ...context }
       : context
-    return new AnalyticsUser(ids, this.adapter, this.validator, ctx)
+    return new AnalyticsUser(
+      ids,
+      msg => this.enqueueMessage(msg),
+      this.validator,
+      ctx,
+    )
+  }
+
+  public enqueueMessage(message: Message) {
+    switch (message.type) {
+      case 'track':
+        this.adapter.onTrack(message)
+        break
+      case 'identify':
+        this.adapter.onIdentify(message)
+        break
+      default:
+        // Should not happen in theory, but JS is dynamic...
+        return this.error(
+          `Unexpected analytics message type="${message &&
+            (message as any).type}"`,
+        )
+    }
+    if (this.config.onMessage) {
+      this.config.onMessage(message)
+    }
   }
 
   // TODO: Add some tests
   public async flush() {
     return this.adapter.onFlush()
   }
+
+  private error(msg: string) {
+    if (this.config.debug) {
+      throw new AnalyticsError(msg)
+    }
+    // tslint:disable-next-line no-console
+    console.warn('[analytics]', msg)
+  }
 }
+
+// tslint:disable-next-line max-classes-per-file
+export class AnalyticsError extends Error {}

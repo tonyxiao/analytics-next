@@ -101,6 +101,8 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
     if (this.debug) {
       throw new TrackingPlanError(msg, validation)
     }
+    // tslint:disable-next-line no-console
+    console.warn('[analytics]', msg)
     return null
   }
 }
