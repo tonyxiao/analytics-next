@@ -4,6 +4,7 @@ Next gen. universal Segment.io client powered by TypeScript - compile time track
 
 # TODO:
 
+* [ ] Add support for express-style middlewares
 * [ ] Auto-application lifecycle methods
 * [ ] Auto screen tracking for react-navigation
 * [ ] Auto-collect context information
