@@ -14,7 +14,9 @@ export class AnalyticsUser<T extends TrackingPlan> {
     private adapter: PlatformAdatper,
     private validator?: T,
     private context: Context = {},
-  ) {}
+  ) {
+    // TODO: Validate either userId or anonymousId exists
+  }
 
   public identify(
     traits: Partial<TypeOfProps<T['traits']>>,
