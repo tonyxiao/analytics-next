@@ -59,3 +59,9 @@ it('passes context and integrations per call', async () => {
   )
   await expect(analytics.flush()).resolves.toBeTruthy()
 })
+
+it('throws when userId and anonymousId are missing', () => {
+  expect(() => analytics.user({}).track('Test Event', {})).toThrow(
+    'You must pass either an "anonymousId" or a "userId".',
+  )
+})
