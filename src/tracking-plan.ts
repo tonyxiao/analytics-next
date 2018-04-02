@@ -53,6 +53,9 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
       if (name in this.traits === false) {
         return this.error(`Trait not allowed: '${name}'`)
       }
+      if (message.traits[name] === undefined) {
+        delete message.traits[name]
+      }
     }
     // TODO: Pre-compile validators once so we dont' need to re-run every time
     const res = t.partial(this.traits as any).decode(message.traits)
@@ -74,6 +77,9 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
     for (const name of Object.keys(message.properties)) {
       if (name in this.events[event] === false) {
         return this.error(`Event '${event}' property not allowed: '${name}'`)
+      }
+      if (message.properties[name] === undefined) {
+        delete message.properties[name]
       }
     }
     // TODO: Make sure to handle NoProps case
