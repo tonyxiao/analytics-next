@@ -11,6 +11,7 @@ export interface Config<T extends TrackingPlan> {
   adapter: PlatformAdatper
   validator?: T
   debug?: boolean
+  context?: Context
 }
 
 export class Analytics<T extends TrackingPlan> {
@@ -26,9 +27,12 @@ export class Analytics<T extends TrackingPlan> {
     }
   }
 
-  public user(userId: string | IDs, context?: Context) {
+  public user(userId: string | IDs, context: Context = {}) {
     const ids = typeof userId === 'string' ? { userId } : userId
-    return new AnalyticsUser(ids, this.adapter, this.validator, context)
+    const ctx = this.config.context
+      ? { ...this.config.context, ...context }
+      : context
+    return new AnalyticsUser(ids, this.adapter, this.validator, ctx)
   }
 
   // TODO: Add some tests
