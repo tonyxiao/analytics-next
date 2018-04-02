@@ -35,7 +35,7 @@ export class AnalyticsUser<T extends TrackingPlan> {
     if (this.validator) {
       message = this.validator.validateIdentify(message)
       if (!message) {
-        return
+        return this
       }
     }
     this.adapter.onIdentify(message)
@@ -67,7 +67,7 @@ export class AnalyticsUser<T extends TrackingPlan> {
     if (this.validator) {
       message = this.validator.validateTrack(message)
       if (!message) {
-        return
+        return this
       }
     }
     this.adapter.onTrack(message)
