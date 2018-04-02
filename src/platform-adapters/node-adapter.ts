@@ -1,8 +1,9 @@
 import AnalyticsNode = require('analytics-node')
-import { promisify } from 'es6-promisify'
+import { inspect, promisify } from 'util'
 
 import { SegmentConfig } from '.'
 import { IdentifyMessage, PlatformAdatper, TrackMessage } from '../models'
+import { debug } from '../utils'
 
 export class NodeAdapter implements PlatformAdatper {
   private segment: AnalyticsNode
@@ -19,6 +20,7 @@ export class NodeAdapter implements PlatformAdatper {
   }
 
   public onTrack(message: TrackMessage) {
+    debug('Adapter will track', inspect(message))
     this.segment.track({
       userId: message.userId!,
       anonymousId: message.anonymousId!,
@@ -34,6 +36,7 @@ export class NodeAdapter implements PlatformAdatper {
   }
 
   public onIdentify(message: IdentifyMessage) {
+    debug('Adapter will identify', inspect(message))
     this.segment.identify({
       userId: message.userId!,
       traits: message.traits,
@@ -48,6 +51,7 @@ export class NodeAdapter implements PlatformAdatper {
 
   // TODO: Add some tests
   public async onFlush() {
+    debug('Adapter will flush')
     return promisify(this.segment.flush)
   }
 }

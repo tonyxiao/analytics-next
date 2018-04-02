@@ -1,3 +1,3 @@
-import * as envvar from 'envvar'
+import * as initDebug from 'debug'
 
-export { envvar }
+export const debug = initDebug('analytics-next')

@@ -1,7 +1,7 @@
 import { Analytics } from '../analytics'
 import { NodeAdapter } from '../platform-adapters/node-adapter'
 import { NoProps, t, TrackingPlan } from '../tracking-plan'
-import { envvar } from '../utils'
+import { envvar } from './test-utils'
 
 const traits = {
   email: t.string,

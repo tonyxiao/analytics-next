@@ -14,17 +14,16 @@
     "test": "jest --verbose",
     "lint": "tslint -p ."
   },
-  "files": [
-    "build/",
-    "src/"
-  ],
+  "files": ["build/", "src/"],
   "dependencies": {
     "analytics-node": "^3.3.0-beta.2",
-    "es6-promisify": "^6.0.0",
-    "io-ts": "^1.0.5"
+    "debug": "^3.1.0",
+    "io-ts": "^1.0.5",
+    "util": "^0.10.3"
   },
   "devDependencies": {
     "@types/analytics-node": "^0.0.30",
+    "@types/debug": "^0.0.30",
     "@types/es6-promisify": "^6.0.0",
     "@types/jest": "^22.2.2",
     "@types/node": "^9.6.1",

@@ -1,6 +1,6 @@
 import { Analytics } from '../analytics'
 import { NodeAdapter } from '../platform-adapters/node-adapter'
-import { envvar } from '../utils'
+import { envvar } from './test-utils'
 
 const analytics = new Analytics({
   adapter: new NodeAdapter({

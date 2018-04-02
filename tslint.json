@@ -4,6 +4,7 @@
   "rules": {
     "object-literal-sort-keys": false,
     "interface-name": false,
-    "no-console": {"severity": "warn"}
+    "no-console": { "severity": "warn" },
+    "no-implicit-dependencies": [true, "dev"]
   }
 }
