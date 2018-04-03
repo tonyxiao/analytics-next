@@ -12,7 +12,8 @@ export interface Config<T extends TrackingPlan> {
   validator?: T
   debug?: boolean
   context?: Context
-  onMessage?: (message: Message) => void
+  /** Simplified middleware api that takes a message and returns another */
+  middleware?: (message: Message) => Message
 }
 
 export class Analytics<T extends TrackingPlan> {
@@ -42,6 +43,9 @@ export class Analytics<T extends TrackingPlan> {
   }
 
   public enqueueMessage(message: Message) {
+    if (this.config.middleware) {
+      message = this.config.middleware(message)
+    }
     switch (message.type) {
       case 'track':
         this.adapter.onTrack(message)
@@ -55,9 +59,6 @@ export class Analytics<T extends TrackingPlan> {
           `Unexpected analytics message type="${message &&
             (message as any).type}"`,
         )
-    }
-    if (this.config.onMessage) {
-      this.config.onMessage(message)
     }
   }
 
