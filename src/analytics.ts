@@ -1,6 +1,7 @@
 import { AnalyticsUser } from './analytics-user'
 import { Context, IDs, Message, PlatformAdatper } from './models'
 import { TrackingPlan } from './tracking-plan'
+import { debug } from './utils'
 
 /**
  * We use `TrackingPlan` instead of Validator here for best compile
@@ -45,6 +46,10 @@ export class Analytics<T extends TrackingPlan> {
   public enqueueMessage(message: Message) {
     if (this.config.middleware) {
       message = this.config.middleware(message)
+      if (!message) {
+        debug('Message swallowed by middleware originalMessage=', message)
+        return
+      }
     }
     switch (message.type) {
       case 'track':
