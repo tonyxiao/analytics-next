@@ -13,8 +13,11 @@ export interface Config<T extends TrackingPlan> {
   validator?: T
   debug?: boolean
   context?: Context
-  /** Simplified middleware api that takes a message and returns another */
-  middleware?: (message: Message) => Message
+  /**
+   * Simplified middleware api that takes a message and returns another
+   * Return `null` or `undefined` to swallow the message
+   */
+  middleware?: (message: Message) => Message | null | undefined
 }
 
 export class Analytics<T extends TrackingPlan> {
@@ -45,7 +48,7 @@ export class Analytics<T extends TrackingPlan> {
 
   public enqueueMessage(message: Message) {
     if (this.config.middleware) {
-      message = this.config.middleware(message)
+      message = this.config.middleware(message) as Message
       if (!message) {
         debug('Message swallowed by middleware originalMessage=', message)
         return
