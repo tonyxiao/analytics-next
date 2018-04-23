@@ -52,6 +52,6 @@ export class NodeAdapter implements PlatformAdatper {
   // TODO: Add some tests
   public async onFlush() {
     debug('Adapter will flush')
-    return promisify(this.segment.flush)
+    return promisify(this.segment.flush)()
   }
 }
