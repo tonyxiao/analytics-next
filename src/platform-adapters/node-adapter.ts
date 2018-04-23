@@ -1,5 +1,5 @@
 import AnalyticsNode = require('analytics-node')
-import { inspect, promisify } from 'util'
+import { inspect } from 'util'
 
 import { SegmentConfig } from '.'
 import { IdentifyMessage, PlatformAdatper, TrackMessage } from '../models'
@@ -52,6 +52,14 @@ export class NodeAdapter implements PlatformAdatper {
   // TODO: Add some tests
   public async onFlush() {
     debug('Adapter will flush')
-    return promisify(this.segment.flush)()
+    return new Promise((resolve, reject) => {
+      this.segment.flush((err, batch) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(batch)
+        }
+      })
+    })
   }
 }
