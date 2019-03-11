@@ -1,7 +1,6 @@
 import * as t from 'io-ts'
 // tslint:disable-next-line no-submodule-imports
 import { PathReporter } from 'io-ts/lib/PathReporter'
-import { inspect } from 'util'
 
 import {
   Context,
@@ -61,7 +60,10 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
     const res = t.partial(this.traits as any).decode(message.traits)
     if (res.isLeft()) {
       // TODO: Add io-ts reporters to say exactly what's not valid
-      return this.error(`Traits are not valid ${inspect(message.traits)}`, res)
+      return this.error(
+        `Traits are not valid ${JSON.stringify(message.traits)}`,
+        res,
+      )
     }
     return {
       ...message,
@@ -87,7 +89,7 @@ export class TrackingPlan<T extends Traits = Traits, E extends Events = Events>
     if (res.isLeft()) {
       // TODO: Add io-ts reporters to say exactly what's not valid
       return this.error(
-        `'${event}' properties are not valid ${inspect(message.properties)}`,
+        `'${event}' properties are not valid ${message.properties}`,
         res,
       )
     }

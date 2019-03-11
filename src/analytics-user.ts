@@ -60,15 +60,15 @@ export class AnalyticsUser<T extends TrackingPlan> {
         ...this.context,
         ...opts.context,
       },
-      event,
-      properties,
+      event: event as any,
+      properties: properties as any,
       type: 'track',
     }
     if (this.validator) {
-      message = this.validator.validateTrack(message)
-      if (!message) {
-        return this
-      }
+      message = this.validator.validateTrack(message!)
+    }
+    if (!message) {
+      return this
     }
     this.enqueueMessage(message)
     return this
