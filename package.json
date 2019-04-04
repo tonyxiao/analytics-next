@@ -1,6 +1,6 @@
 {
   "name": "analytics-next",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "author": {
     "name": "Tony Xiao",
@@ -16,7 +16,10 @@
     "lint": "tslint -p .",
     "prepublish": "yarn build"
   },
-  "files": ["build/", "src/"],
+  "files": [
+    "build/",
+    "src/"
+  ],
   "optionalPeerDependencies": {
     "analytics-node": "^3.3.0-beta.2",
     "util": "^0.10.3"
