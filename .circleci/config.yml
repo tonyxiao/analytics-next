@@ -20,8 +20,6 @@ jobs:
           name: Install dependencies # and ensure yarn.locks are up to date
           command: |
             yarn install # && git diff --exit-code
-            # Hack to manually install optionalPeerDependencies
-            yarn add analytics-node util
 
       - save_cache:
           paths:
