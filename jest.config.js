@@ -8,7 +8,7 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
-  setupTestFrameworkScriptFile: './scripts/setup-test-framework.ts',
+  setupFilesAfterEnv: './scripts/setup-test-framework.ts',
   testRegex: '(\\.(test|spec))\\.tsx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   modulePathIgnorePatterns: ['__mocks__/.+.jsx?$', '__mocks__/.+.tsx?$'],

@@ -34,7 +34,7 @@ jobs:
       # https://facebook.github.io/jest/docs/en/troubleshooting.html#tests-are-extremely-slow-on-docker-and-or-continuous-integration-ci-server
       - run:
           name: Run Tests
-          command: JEST_JUNIT_OUTPUT=./test-results/jest.xml yarn test --ci --coverage --testResultsProcessor='jest-junit' --maxWorkers=4
+          command: JEST_JUNIT_OUTPUT=./test-results/jest.xml yarn test --ci --coverage --reporters='jest-junit' --maxWorkers=4
 
       - run:
           name: Run Linter
