@@ -10,15 +10,13 @@
   "typings": "build/index.d.ts",
   "scripts": {
     "clean": "git clean -X -f  --exclude='!.envrc' --exclude='!.env'",
+    "typecheck": "tsc --noEmit",
     "build": "tsc",
     "test": "jest --verbose",
     "lint": "tslint -p .",
     "prepublish": "yarn build"
   },
-  "files": [
-    "build/",
-    "src/"
-  ],
+  "files": ["build/", "src/"],
   "optionalPeerDependencies": {
     "analytics-node": "^3.3.0-beta.2",
     "util": "^0.10.3"
