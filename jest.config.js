@@ -5,7 +5,7 @@ module.exports = {
   moduleDirectories: ['node_modules'],
   testPathIgnorePatterns: ['/node_modules/'],
   transform: {
-    '^.+\\.tsx?$': '<rootDir>/node_modules/ts-jest/preprocessor.js',
+    '^.+\\.tsx?$': 'ts-jest',
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   setupTestFrameworkScriptFile: './scripts/setup-test-framework.ts',
